@@ -7,7 +7,7 @@ LDIR =../files
 
 LIBS=-lm
 
-_OBJ = CleanProgram.o BasicTape.o InputTape.o LoadInstruction.o OutputTape.o Program.o ProgramCounter.o Memory.o Instruction.o Cpu.o main.o
+_OBJ = CleanProgram.o BasicTape.o InputTape.o LoadInstruction.o StoreInstruction.o AddInstruction.o SubInstruction.o MultInstruction.o DivInstruction.o ReadInstruction.o WriteInstruction.o JumpInstruction.o JgtzInstruction.o JzeroInstruction.o OutputTape.o Program.o ProgramCounter.o Memory.o Instruction.o Cpu.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all: ram_sim
