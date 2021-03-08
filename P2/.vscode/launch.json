@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/build/ram_sim",
-      "args": ["files/test1.ram", "files/inputTape.in", "outputTape.out", "1"],
+      "args": ["files/test7.ram", "files/inputTape.in", "files/outputTape.out", "1"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

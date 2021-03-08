@@ -2,13 +2,13 @@
 
 BasicTape::BasicTape() : 
 actualPos(0) {
-  
+
 }
 
-void BasicTape::showTape(void) {
+void BasicTape::showTape(std::ostream& os) {
   for (auto it : tape)
-    std::cout << it << " ";
-  std::cout << std::endl;
+    os << it << " ";
+  os << std::endl;
 }
 
 std::vector<int> BasicTape::getTape(void) {

@@ -10,10 +10,10 @@ void StoreInstruction::parse(std::string instructionText) {
   iss >> opcode >> operAux;
   if (operAux[0] == '=') {
     directType = inm;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else if (operAux[0] == '*') {
     directType = indir;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else {
     directType = dir;
     operation = std::stoi(operAux);
@@ -25,9 +25,10 @@ void StoreInstruction::execute(Context& ctx) {
     std::cout << "Esto no tiene sentido\n Hacer algo";
   else if (directType == 1)
     ctx.mem->storeVal(operation, ctx.mem -> getVal(0));
-  else if (directType == 2)
-    ctx.mem->storeVal(ctx.mem -> getVal(ctx.mem -> getVal(operation)), ctx.mem -> getVal(0));
-  ctx.p++;
+  else if (directType == 2) {
+    ctx.mem->storeVal(ctx.mem -> getVal(operation), ctx.mem -> getVal(0));
+  }
+  ctx.p -> iterate();
 }
 
 void StoreInstruction::disassemble() {

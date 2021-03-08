@@ -4,8 +4,9 @@ Program::Program(/* args */) {}
 
 Program::~Program() {}
 
-Program::Program(std::vector<Instruction*> allInstr) :
-instructions(allInstr) {
+Program::Program(std::vector<Instruction*> allInstr, std::map<std::string, int>& tg) :
+instructions(allInstr),
+tags(tg) {
 
   
 }

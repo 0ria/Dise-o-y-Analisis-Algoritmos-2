@@ -10,5 +10,6 @@ class ProgramCounter {
   inline int getDir(void) { return nextDir; };
   void operator=(int);
   void operator++(int);
+  inline void iterate() { nextDir++; };
   std::ostream& operator<<(std::ostream& os);
 };

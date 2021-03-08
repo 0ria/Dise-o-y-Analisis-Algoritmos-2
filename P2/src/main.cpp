@@ -19,7 +19,6 @@ int main (int argc, char* argv[]) {
 
   program.open(argv[1]);
   inputTape.open(argv[2]);
-  outputTape.open(argv[3]);
   flag = std::atoi(argv[4]);
   if ((!program.is_open()) || (!inputTape.is_open())) {
     std::cout << "Error al abrir algun fichero\n";
@@ -30,7 +29,7 @@ int main (int argc, char* argv[]) {
   std::vector<Instruction*> allInstructions = cleaner.getResultProg();
   std::map<std::string, int> tags = cleaner.getResultMap();
   
-  Cpu cpu(allInstructions, inputTape, outputTape, flag);
+  Cpu cpu(allInstructions, inputTape, argv[3], flag, tags);
   cpu.executeProgram();
 /*
   for (auto it : uncommentedProgram)

@@ -10,10 +10,10 @@ void ReadInstruction::parse(std::string instructionText) {
   iss >> opcode >> operAux;
   if (operAux[0] == '=') {
     directType = inm;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else if (operAux[0] == '*') {
     directType = indir;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else {
     directType = dir;
     operation = std::stoi(operAux);
@@ -25,7 +25,7 @@ void ReadInstruction::execute(Context& ctx) {
     ctx.mem -> storeVal(operation, ctx.in->getElementFromTape());
   else if (directType == 2)
     ctx.mem -> storeVal(ctx.mem ->getVal(operation), ctx.in->getElementFromTape());
-  ctx.p++;
+  ctx.p -> iterate();
 }
 
 void ReadInstruction::disassemble() {

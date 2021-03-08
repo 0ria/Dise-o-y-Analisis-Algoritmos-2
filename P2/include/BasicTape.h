@@ -11,8 +11,8 @@ protected:
   int actualPos;
 public:
   BasicTape(/* args */);
-  ~BasicTape();
+  ~BasicTape() {};
   std::vector<int> getTape(void);
   int read(void);
-  void showTape(void);
+  void showTape(std::ostream& os);
 };

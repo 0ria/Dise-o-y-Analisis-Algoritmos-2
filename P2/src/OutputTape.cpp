@@ -1,14 +1,19 @@
 #include "../include/OutputTape.h"
 
-OutputTape::OutputTape(/* args */) {}
+OutputTape::OutputTape(/* args */) {BasicTape();}
 
 OutputTape::~OutputTape() {}
 
-OutputTape::OutputTape(std::ofstream& out) {
-  tape.resize(8);
-  std::fill(tape.begin(), tape.end(), 0);
+OutputTape::OutputTape(std::string& out) : 
+outFileName(out) {
+
 }
 
-void OutputTape::write(int num) {
-  tape.push_back(num);
+void OutputTape::write(int num) { tape.push_back(num); }
+
+void OutputTape::print() { 
+  std::ofstream outFile;
+  outFile.open(outFileName);
+  showTape(outFile);
+  //outFile.open(showTape(std::cout)); 
 }

@@ -18,7 +18,7 @@
 #include "JumpInstruction.h"
 #include "JgtzInstruction.h"
 #include "JzeroInstruction.h"
-//#include "HaltInstruction.h"
+#include "HaltInstruction.h"
 
 
 enum opcodes {

@@ -10,10 +10,10 @@ void AddInstruction::parse(std::string instructionText) {
   iss >> opcode >> operAux;
   if (operAux[0] == '=') {
     directType = inm;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else if (operAux[0] == '*') {
     directType = indir;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else {
     directType = dir;
     operation = std::stoi(operAux);
@@ -27,7 +27,7 @@ void AddInstruction::execute(Context& ctx) {
     ctx.mem -> setVal(ctx.mem -> getVal(0) + ctx.mem -> getVal(operation));
   else if (directType == 2)
     ctx.mem -> setVal(ctx.mem -> getVal(0) + ctx.mem -> getVal(ctx.mem -> getVal(operation)));
-  ctx.p++;
+  ctx.p -> iterate();
 }
 
 void AddInstruction::disassemble() {

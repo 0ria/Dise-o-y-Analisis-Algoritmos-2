@@ -1,0 +1,15 @@
+# Programa que calcula n^n con complejidad lineal	
+READ 2
+LOAD 2
+STORE 3
+STORE 1
+bucle:LOAD 1
+SUB =1
+JZERO fin
+STORE 1
+LOAD 3
+MULT 2
+STORE 3
+JUMP bucle
+fin:WRITE 3
+HALT

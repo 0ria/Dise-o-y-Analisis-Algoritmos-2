@@ -10,10 +10,10 @@ void WriteInstruction::parse(std::string instructionText) {
   iss >> opcode >> operAux;
   if (operAux[0] == '=') {
     directType = inm;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else if (operAux[0] == '*') {
     directType = indir;
-    operation = int(operAux[1]);
+    operation = std::stoi(operAux.substr(1));
   } else {
     directType = dir;
     operation = std::stoi(operAux);
@@ -27,7 +27,8 @@ void WriteInstruction::execute(Context& ctx) {
     ctx.out -> write(ctx.mem -> getVal(operation));
   else if (directType = 2)
     ctx.out -> write(ctx.mem -> getVal(ctx.mem ->getVal(operation)));
-  ctx.p++;
+  ctx.p -> iterate();
+
 }
 
 void WriteInstruction::disassemble() {

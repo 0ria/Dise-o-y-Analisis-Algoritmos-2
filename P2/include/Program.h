@@ -12,7 +12,7 @@ private:
   std::map<std::string, int> tags;
 public:
   Program(/* args */);
-  Program(std::vector<Instruction*>);
+  Program(std::vector<Instruction*>, std::map<std::string, int>&);
   ~Program();
   //void showProgram();
   void showMap();

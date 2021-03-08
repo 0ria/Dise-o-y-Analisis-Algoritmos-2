@@ -14,7 +14,8 @@ void JzeroInstruction::execute(Context& ctx) {
   if (ctx.mem -> getVal(0) == 0)
     ctx.p -> setDir(ctx.tags -> find(operation) -> second);
   else
-    ctx.p++;
+    ctx.p -> iterate();
+
 }
 
 void JzeroInstruction::disassemble() {
