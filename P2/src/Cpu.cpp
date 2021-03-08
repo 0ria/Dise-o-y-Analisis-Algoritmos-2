@@ -4,7 +4,7 @@ Cpu::Cpu(/* args */) {}
 
 Cpu::~Cpu() {}
 
-Cpu::Cpu(std::ifstream& programInput, std::ifstream& inFile,
+Cpu::Cpu(std::vector<Instruction*> programInput, std::ifstream& inFile,
          std::ofstream& outFile, int flag)
     : program(programInput),
       inTape(inFile),
@@ -14,6 +14,7 @@ Cpu::Cpu(std::ifstream& programInput, std::ifstream& inFile,
         ctx.in = &inTape;
         ctx.out = &outTape;
         ctx.p = &pc;
+        ctx.tags = program.getTags();
       }
 
 void Cpu::executeProgram() {
@@ -41,6 +42,7 @@ void Cpu::executeProgram() {
         memory.showMemoryRegisters();
         break;
       case 't':
+        step();
         break;
       case 'e':
         flagExecution = 1;
@@ -65,4 +67,8 @@ void Cpu::executeProgram() {
         break;
     }
   }
+}
+
+void Cpu::step(void) {
+  program.getInstruction(pc) -> execute(ctx);
 }

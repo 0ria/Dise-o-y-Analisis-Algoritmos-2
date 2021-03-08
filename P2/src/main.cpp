@@ -26,7 +26,11 @@ int main (int argc, char* argv[]) {
     return 1;
   }
 
-  Cpu cpu(program, inputTape, outputTape, flag);
+  CleanProgram cleaner(program);
+  std::vector<Instruction*> allInstructions = cleaner.getResultProg();
+  std::map<std::string, int> tags = cleaner.getResultMap();
+  
+  Cpu cpu(allInstructions, inputTape, outputTape, flag);
   cpu.executeProgram();
 /*
   for (auto it : uncommentedProgram)

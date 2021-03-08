@@ -8,12 +8,14 @@
 class Program
 {
 private:
-  std::vector<Instruction> instructions;
+  std::vector<Instruction*> instructions;
   std::map<std::string, int> tags;
 public:
   Program(/* args */);
-  Program(std::ifstream&);
+  Program(std::vector<Instruction*>);
   ~Program();
   //void showProgram();
   void showMap();
+  inline std::map<std::string, int>* getTags() { return &tags; };
+  Instruction* getInstruction(ProgramCounter&);
 };

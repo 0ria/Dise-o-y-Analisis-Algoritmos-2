@@ -1,6 +1,6 @@
 #include "../include/InputTape.h"
 
-InputTape::InputTape(/* args */) {}
+InputTape::InputTape(/* args */){}
 
 InputTape::InputTape(std::ifstream& in) {
   std::copy(
@@ -10,3 +10,8 @@ InputTape::InputTape(std::ifstream& in) {
 }
 
 InputTape::~InputTape() {}
+
+int InputTape::getElementFromTape(void) {
+  actualPos++;
+  return tape[actualPos - 1];
+}

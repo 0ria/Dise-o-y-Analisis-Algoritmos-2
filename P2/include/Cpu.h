@@ -22,7 +22,8 @@ private:
 
 public:
   Cpu(/* args */);
-  Cpu(std::ifstream&, std::ifstream&, std::ofstream&, int);
+  Cpu(std::vector<Instruction*>, std::ifstream&, std::ofstream&, int);
   ~Cpu();
   void executeProgram();
+  void step();
 };

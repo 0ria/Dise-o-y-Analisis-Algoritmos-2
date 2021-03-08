@@ -10,9 +10,8 @@ protected:
   std::vector<int> tape;
   int actualPos;
 public:
-  BasicTape(/* args */) {}
-  ~BasicTape() {}
-  void write(int);
+  BasicTape(/* args */);
+  ~BasicTape();
   std::vector<int> getTape(void);
   int read(void);
   void showTape(void);

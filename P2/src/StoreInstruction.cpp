@@ -1,10 +1,10 @@
-#include "../include/LoadInstruction.h"
+#include "../include/StoreInstruction.h"
 
-LoadInstruction::LoadInstruction(/* args */) {}
+StoreInstruction::StoreInstruction(/* args */) {}
 
-LoadInstruction::~LoadInstruction() {}
+StoreInstruction::~StoreInstruction() {}
 
-void LoadInstruction::parse(std::string instructionText) {
+void StoreInstruction::parse(std::string instructionText) {
   std::istringstream iss(instructionText);
   std::string operAux;
   iss >> opcode >> operAux;
@@ -20,17 +20,17 @@ void LoadInstruction::parse(std::string instructionText) {
   }
 }
 
-void LoadInstruction::execute(Context& ctx) {
+void StoreInstruction::execute(Context& ctx) {
   if (directType == 0)
-    ctx.mem->setVal(operation);
+    std::cout << "Esto no tiene sentido\n Hacer algo";
   else if (directType == 1)
-    ctx.mem->setVal(ctx.mem->getVal(operation));
+    ctx.mem->storeVal(operation, ctx.mem -> getVal(0));
   else if (directType == 2)
-    ctx.mem->setVal(ctx.mem->getVal(ctx.mem->getVal(operation)));
+    ctx.mem->storeVal(ctx.mem -> getVal(ctx.mem -> getVal(operation)), ctx.mem -> getVal(0));
   ctx.p++;
 }
 
-void LoadInstruction::disassemble() {
+void StoreInstruction::disassemble() {
   std::cout << "OPCODE = " << opcode << ", DIRECCIONAMIENTO: ";
   if (directType == inm)
     std::cout << "INMEDIATO,";

@@ -9,4 +9,5 @@ public:
   OutputTape(/* args */);
   OutputTape(std::ofstream&);
   ~OutputTape();
+  void write(int);
 };

@@ -1,6 +1,7 @@
 #include "../include/ProgramCounter.h"
 
-ProgramCounter::ProgramCounter(/* args */) {}
+ProgramCounter::ProgramCounter(/* args */) :
+nextDir(0) {}
 
 ProgramCounter::~ProgramCounter() {}
 

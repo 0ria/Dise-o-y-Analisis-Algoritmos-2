@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <iostream>
 #include <sstream>
+#include <map>
 
 enum DIRECT {inm, dir, indir};
 
@@ -15,6 +16,7 @@ struct Context {
   InputTape* in;
   OutputTape* out;
   ProgramCounter* p;
+  std::map<std::string, int>* tags;
 };
 
 class Instruction
@@ -26,7 +28,7 @@ public:
   virtual ~Instruction() = default;
   virtual void parse(std::string instructionText) = 0;
   virtual void execute(Context&) = 0;
-  virtual std::string disassemble() const = 0;
+  virtual void disassemble() = 0;
 };
 
 

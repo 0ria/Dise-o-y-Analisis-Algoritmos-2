@@ -4,14 +4,10 @@ Program::Program(/* args */) {}
 
 Program::~Program() {}
 
-Program::Program(std::ifstream& everyInstruction) {
-  CleanProgram cleaner(everyInstruction);
-  std::vector<std::string> uncommentedProgram = cleaner.getResultProg();
-  tags = cleaner.getResultMap();
+Program::Program(std::vector<Instruction*> allInstr) :
+instructions(allInstr) {
 
-  for (int i = 0; i < uncommentedProgram.size(); i++) {
-    instructions[i].parse(uncommentedProgram[i]);
-  }
+  
 }
 /*
 void Program::showProgram() {
@@ -25,4 +21,8 @@ void Program::showMap() {
   for (std::map<std::string, int>::const_iterator it = tags.begin(); it != tags.end(); it++) {
     std::cout << it -> first << " " << it -> second << "\n";
   }
+}
+
+Instruction* Program::getInstruction(ProgramCounter& pc) {
+  return instructions[pc.getDir()];
 }

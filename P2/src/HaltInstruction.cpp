@@ -1,10 +1,10 @@
-#include "../include/LoadInstruction.h"
+#include "../include/HaltInstruction.h"
 
-LoadInstruction::LoadInstruction(/* args */) {}
+HaltInstruction::HaltInstruction(/* args */) {}
 
-LoadInstruction::~LoadInstruction() {}
+HaltInstruction::~HaltInstruction() {}
 
-void LoadInstruction::parse(std::string instructionText) {
+void HaltInstruction::parse(std::string instructionText) {
   std::istringstream iss(instructionText);
   std::string operAux;
   iss >> opcode >> operAux;
@@ -20,17 +20,17 @@ void LoadInstruction::parse(std::string instructionText) {
   }
 }
 
-void LoadInstruction::execute(Context& ctx) {
+void HaltInstruction::execute(Context& ctx) {
   if (directType == 0)
-    ctx.mem->setVal(operation);
+    ctx.mem -> setVal(ctx.mem -> getVal(0) * operation);
   else if (directType == 1)
-    ctx.mem->setVal(ctx.mem->getVal(operation));
+    ctx.mem -> setVal(ctx.mem -> getVal(0) * ctx.mem -> getVal(operation));
   else if (directType == 2)
-    ctx.mem->setVal(ctx.mem->getVal(ctx.mem->getVal(operation)));
+    ctx.mem -> setVal(ctx.mem -> getVal(0) * ctx.mem -> getVal(ctx.mem -> getVal(operation)));
   ctx.p++;
 }
 
-void LoadInstruction::disassemble() {
+void HaltInstruction::disassemble() {
   std::cout << "OPCODE = " << opcode << ", DIRECCIONAMIENTO: ";
   if (directType == inm)
     std::cout << "INMEDIATO,";

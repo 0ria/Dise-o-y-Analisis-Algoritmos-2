@@ -1,10 +1,10 @@
-#include "../include/LoadInstruction.h"
+#include "../include/ReadInstruction.h"
 
-LoadInstruction::LoadInstruction(/* args */) {}
+ReadInstruction::ReadInstruction(/* args */) {}
 
-LoadInstruction::~LoadInstruction() {}
+ReadInstruction::~ReadInstruction() {}
 
-void LoadInstruction::parse(std::string instructionText) {
+void ReadInstruction::parse(std::string instructionText) {
   std::istringstream iss(instructionText);
   std::string operAux;
   iss >> opcode >> operAux;
@@ -20,17 +20,15 @@ void LoadInstruction::parse(std::string instructionText) {
   }
 }
 
-void LoadInstruction::execute(Context& ctx) {
-  if (directType == 0)
-    ctx.mem->setVal(operation);
-  else if (directType == 1)
-    ctx.mem->setVal(ctx.mem->getVal(operation));
+void ReadInstruction::execute(Context& ctx) {
+  if (directType == 1)
+    ctx.mem -> storeVal(operation, ctx.in->getElementFromTape());
   else if (directType == 2)
-    ctx.mem->setVal(ctx.mem->getVal(ctx.mem->getVal(operation)));
+    ctx.mem -> storeVal(ctx.mem ->getVal(operation), ctx.in->getElementFromTape());
   ctx.p++;
 }
 
-void LoadInstruction::disassemble() {
+void ReadInstruction::disassemble() {
   std::cout << "OPCODE = " << opcode << ", DIRECCIONAMIENTO: ";
   if (directType == inm)
     std::cout << "INMEDIATO,";
