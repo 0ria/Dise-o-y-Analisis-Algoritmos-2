@@ -12,7 +12,6 @@ void HaltInstruction::parse(std::string instructionText) {
 
 void HaltInstruction::execute(Context& ctx) {
   throw('x');
-  std::cout << "cuca\n";
 }
 
 void HaltInstruction::disassemble() {

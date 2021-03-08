@@ -50,7 +50,7 @@ void Cpu::executeProgram() {
           }
           break;
         case 's':
-          // program.showProgram();
+          program.getInstruction(pc) -> disassemble();
           break;
         case 'i':
           std::cout << "El contenido de la cinta de entrada es: \n";
