@@ -1,7 +1,36 @@
 #pragma once
+#include "Memory.h"
+#include "InputTape.h"
+#include "OutputTape.h"
+#include "ProgramCounter.h"
 #include <string>
 #include <algorithm>
 #include <iostream>
+#include <sstream>
+
+enum DIRECT {inm, dir, indir};
+
+struct Context {
+  Memory* mem;
+  InputTape* in;
+  OutputTape* out;
+  ProgramCounter* p;
+};
+
+class Instruction
+{
+protected:
+  std::string opcode;
+public:
+  Instruction(/* args */);
+  virtual ~Instruction() = default;
+  virtual void parse(std::string instructionText) = 0;
+  virtual void execute(Context&) = 0;
+  virtual std::string disassemble() const = 0;
+};
+
+
+/*
 class Instruction
 {
 private:
@@ -9,7 +38,7 @@ private:
   std::string instruction;
   std::string operation;
 public:
-  Instruction(/* args */);
+  Instruction();
   Instruction(std::string&);
   ~Instruction();
   friend std::ostream& operator<<(std::ostream& os, Instruction& ins) {
@@ -17,3 +46,4 @@ public:
     return os;
   }
 };
+*/

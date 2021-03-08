@@ -11,12 +11,20 @@ int main (int argc, char* argv[]) {
   std::ofstream outputTape;
   int flag;
 
+  if (argc != 5) {
+    std::cout << "Error al introducir por línea de comandos, siga el formato: \n";
+    std::cout << "./ram_sim programaEntrada.ram cintaEntrada.in cintaSalida.out flag\n";
+    return 1;
+  }
+
   program.open(argv[1]);
   inputTape.open(argv[2]);
   outputTape.open(argv[3]);
   flag = std::atoi(argv[4]);
-  if ((!program.is_open()) || (!inputTape.is_open()))
+  if ((!program.is_open()) || (!inputTape.is_open())) {
+    std::cout << "Error al abrir algun fichero\n";
     return 1;
+  }
 
   Cpu cpu(program, inputTape, outputTape, flag);
   cpu.executeProgram();

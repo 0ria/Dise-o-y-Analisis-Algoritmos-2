@@ -2,8 +2,7 @@
 
 Instruction::Instruction(/* args */) {}
 
-Instruction::~Instruction() {}
-
+/*
 Instruction::Instruction(std::string& instrLine) {
   int tagPos = instrLine.find(':');
   if (tagPos == std::string::npos) {
@@ -39,3 +38,4 @@ Instruction::Instruction(std::string& instrLine) {
   operation.erase(std::remove_if(instruction.begin(), instruction.end(), isspace), instruction.end());
   tag.erase(std::remove_if(instruction.begin(), instruction.end(), isspace), instruction.end());
 }
+*/

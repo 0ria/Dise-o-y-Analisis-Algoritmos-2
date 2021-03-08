@@ -4,9 +4,8 @@
 #include <fstream>
 #include <istream>
 
-#include "InputTape.h"
-#include "OutputTape.h"
 #include "Program.h"
+#include "Memory.h"
 //#include "../include/Program.h"
 
 class Cpu
@@ -14,9 +13,12 @@ class Cpu
 private:
   //std::vector<int> registers;
   Program program;
+  Memory memory;
   InputTape inTape;
   OutputTape outTape;
+  ProgramCounter pc;
   int flagExecution;
+  Context ctx;
 
 public:
   Cpu(/* args */);
