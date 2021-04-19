@@ -11,11 +11,18 @@ class LocalSearch {
   void insertTasksBetweenMachines(void);
   void insertTasksSameMachine(void);
 
+  void greedySearch(int);
+  void anxiousSearch(int);
+
+
  public:
   LocalSearch(/* args */);
+  LocalSearch(std::vector<Machine>&);
   ~LocalSearch();
-  std::vector<Machine> improveSolution(std::vector<Machine>, int, int, int);
+  void improveSolution(int, int, int);
   inline std::vector<Machine> getSolution() { return principalSolution; };
+  inline void setMachineVector(std::vector<Machine>& v) {principalSolution = v; }; 
+  int getTotalTct(std::vector<Machine>&);
 };
 
 // Método multiarranque

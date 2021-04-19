@@ -11,6 +11,8 @@ class Machines {
   std::vector<int> processingTime;
   std::vector<int> remainingTasks;
   std::vector<Machine> machineVector;
+  
+  void resetTasks(void);
 
  public:
   Machines(/* args */);
@@ -23,5 +25,5 @@ class Machines {
   int iterTime(void);
   std::vector<std::vector<int>> getBetterTime(int);
   bool minNotSelected(int, std::vector<std::vector<int>>&);
-  void exploreLocal(int, int, int);
+  void exploreLocal(int, int, int, int);
 };

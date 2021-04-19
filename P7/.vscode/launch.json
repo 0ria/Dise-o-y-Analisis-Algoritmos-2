@@ -9,7 +9,7 @@
       "type": "cppdbg",
       "request": "launch",
       "program": "${workspaceFolder}/build/main",
-      "args": ["files/peque.txt", "4", "2", "2"],
+      "args": ["files/prueba.txt", "1", "1", "1", "100"],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",
       "environment": [],

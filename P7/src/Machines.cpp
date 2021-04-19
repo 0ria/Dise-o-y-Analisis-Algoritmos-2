@@ -15,6 +15,13 @@ Machines::Machines(int totalMach, int totalTask,
 
 Machines::~Machines() {}
 
+void Machines::resetTasks() {
+  remainingTasks.clear();
+  machineVector.clear();
+  machineVector.resize(numberOfMachines);
+  for (int i = 1; i <= numberOfTasks; i++) remainingTasks.push_back(i);
+}
+
 bool Machines::minNotSelected(int pos,
                               std::vector<std::vector<int>>& minimums) {
   for (int i = 0; i < minimums.size(); i++) {
@@ -24,7 +31,9 @@ bool Machines::minNotSelected(int pos,
 }
 
 void Machines::grasp() {
-    while (remainingTasks.size() != 0) {
+  resetTasks();
+  // resetTct();
+  while (remainingTasks.size() != 0) {
     std::vector<std::vector<int>> auxVect = getBetterTime(3);
     int index = rand() % auxVect.size();
     machineVector[auxVect[index][0]].addNewTask(
@@ -34,7 +43,6 @@ void Machines::grasp() {
                                      remainingTasks.end(), auxVect[index][1]),
                          remainingTasks.end());
   }
-  for (auto it : machineVector) it.showInfo();
 }
 
 void Machines::greedy() {
@@ -43,11 +51,10 @@ void Machines::greedy() {
     machineVector[auxVect[0]].addNewTask(
         std::make_pair(auxVect[1], auxVect[2]));
 
-    remainingTasks.erase(std::remove(remainingTasks.begin(),
-                                     remainingTasks.end(), auxVect[1]),
-                         remainingTasks.end());
+    remainingTasks.erase(
+        std::remove(remainingTasks.begin(), remainingTasks.end(), auxVect[1]),
+        remainingTasks.end());
   }
-  for (auto it : machineVector) it.showInfo();
 }
 
 std::vector<std::vector<int>> Machines::getBetterTime(int k) {
@@ -55,15 +62,19 @@ std::vector<std::vector<int>> Machines::getBetterTime(int k) {
   int currentTime;
   int currentIncrement;
   while (auxVect.size() != k) {
-  int minTask = remainingTasks[0];
-  int selectedMachine = 0;
-  int minTime = setupTimes[0][remainingTasks[0]] + processingTime[remainingTasks[0] - 1];
-  int minIncrement = minTime + machineVector[0].getTime();
+    int minTask = remainingTasks[0];
+    int selectedMachine = 0;
+    int minTime = setupTimes[0][remainingTasks[0]] +
+                  processingTime[remainingTasks[0] - 1];
+    int minIncrement = minTime + machineVector[0].getTime();
     for (int i = 0; i < remainingTasks.size(); i++) {
       for (int j = 0; j < numberOfMachines; j++) {
-        currentTime = (setupTimes[machineVector[j].getLastTask()][remainingTasks[i]] + processingTime[remainingTasks[i] - 1]);
+        currentTime =
+            (setupTimes[machineVector[j].getLastTask()][remainingTasks[i]] +
+             processingTime[remainingTasks[i] - 1]);
         currentIncrement = currentTime + machineVector[j].getTime();
-        if (currentIncrement < minIncrement && !minNotSelected(remainingTasks[i], auxVect)) {
+        if (currentIncrement < minIncrement &&
+            !minNotSelected(remainingTasks[i], auxVect)) {
           minTask = remainingTasks[i];
           minTime = currentTime;
           selectedMachine = j;
@@ -71,15 +82,46 @@ std::vector<std::vector<int>> Machines::getBetterTime(int k) {
         }
       }
     }
-    auxVect.push_back(std::vector<int> {selectedMachine, minTask, minTime});
+    auxVect.push_back(std::vector<int>{selectedMachine, minTask, minTime});
   }
   return auxVect;
 }
 
-void Machines::exploreLocal(int operativeMethod, int exploreType, int stopCondition) { 
+void Machines::exploreLocal(int operativeMethod, int exploreType,
+                            int stopCondition, int iterationsNumber) {
   LocalSearch ls;
-  ls.improveSolution(machineVector, operativeMethod, exploreType, stopCondition);
-  machineVector = ls.getSolution();
+  switch (stopCondition) {
+    case 1:
+      for (int i = 0; i < iterationsNumber; i++) {
+        grasp();
+        ls.setMachineVector(machineVector);
+        ls.improveSolution(operativeMethod, exploreType, stopCondition);
+      }
+      machineVector = ls.getSolution();
+      for (auto it : machineVector) it.showInfo();
+      break;
+    case 2:
+      int actualIterations = 0;
+      bool firstIteration = true;
+      int minTct;
+      while (actualIterations != iterationsNumber) {
+        grasp();
+        ls.setMachineVector(machineVector);
+        ls.improveSolution(operativeMethod, exploreType, stopCondition);
+        machineVector = ls.getSolution();
+        if (firstIteration) {
+          minTct = ls.getTotalTct(machineVector);
+          firstIteration = false;
+        }
+        if (ls.getTotalTct(machineVector) < minTct) {
+          minTct = ls.getTotalTct(machineVector);
+          actualIterations = 0;
+        }
+        actualIterations++;
+      }
+      for (auto it : machineVector) it.showInfo();
+      break;
+  }
 }
 
 /*
