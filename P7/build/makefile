@@ -1,5 +1,5 @@
 IDIR =../include
-CXX=g++ -std=c++11 -g -o main
+CXX=g++ -std=c++11 -g -o main -O2
 CFLAGS=-I$(IDIR) 
 
 ODIR=../src

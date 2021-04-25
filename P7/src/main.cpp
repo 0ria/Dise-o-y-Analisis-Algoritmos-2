@@ -45,49 +45,252 @@ int main(int argc, char* argv[]) {
   int stopCondition = std::atoi(argv[4]);
   int iterNum = std::atoi(argv[5]);
 
-  if (argc == 6) {
-    inFile.open(argv[1]);
-    parseInput(inFile);
-    int inputOption;
-    std::cout << "Introduzca el tipo de algoritmo a ejecutar\n";
-    std::cout << "1. Greedy\n";
-    std::cout << "2. Another Greedy\n";
-    std::cout << "3. GRASP\n";
-    std::cout << "- ";
-    std::cin >> inputOption;
-    std::cout << std::endl;
-    Machines machn(numberOfMachines, numberOfTasks, setupTimes, processingTime);
+  if (argc == 7) {
+    if (std::atoi(argv[6]) == 0) {
+      inFile.open(argv[1]);
+      parseInput(inFile);
+      int inputOption;
+      std::cout << "Introduzca el tipo de algoritmo a ejecutar\n";
+      std::cout << "1. Greedy\n";
+      std::cout << "2. Another Greedy\n";
+      std::cout << "3. GRASP\n";
+      std::cout << "4. VND\n";
+      std::cout << "5. GVNS\n";
+      std::cout << "- ";
+      std::cin >> inputOption;
+      std::cout << std::endl;
+      Machines machn(numberOfMachines, numberOfTasks, setupTimes,
+                     processingTime);
 
-    switch (inputOption) {
-      case 1:
-        machn.greedy();
-        break;
-      case 2:
-        machn.greedy();  // otro greedy
-        break;
-      case 3:
-        machn.grasp();
-        machn.exploreLocal(operativeMethod, exploreType, stopCondition,
-                           iterNum);
-        break;
-      default:
-        std::cout << "El número introducido no es válido\n";
-        break;
-    }
+      switch (inputOption) {
+        case 1:
+          machn.greedy();
+          break;
+        case 2:
+          machn.greedy();  // otro greedy
+          break;
+        case 3:
+          machn.grasp();
+          machn.exploreLocal(operativeMethod, exploreType, stopCondition,
+                             iterNum);
+          machn.printTimes();
+          break;
+        case 4:
+          machn.grasp();
+          machn.exploreLocal(operativeMethod, exploreType, stopCondition,
+                             iterNum);
+          machn.vnd(operativeMethod, exploreType, stopCondition, iterNum);
+          machn.printTimes();
+          break;
+        case 5:
+          machn.grasp();
+          machn.exploreLocal(operativeMethod, exploreType, stopCondition,
+                             iterNum);
+          machn.gvns(operativeMethod, exploreType, stopCondition, iterNum);
+          machn.printTimes();
+          break;
+        default:
+          std::cout << "El número introducido no es válido\n";
+          break;
+      }
 
-    /*
-    Machines betterGreedyMachine(numberOfMachines, numberOfTasks, setupTimes,
-                         processingTime);
-    betterGreedyMachine.betterGreedy();
-
-    Machines graspMachine(numberOfMachines, numberOfTasks, setupTimes,
+      /*
+      Machines betterGreedyMachine(numberOfMachines, numberOfTasks, setupTimes,
                           processingTime);
-    graspMachine.grasp();
+      betterGreedyMachine.betterGreedy();
 
-    graspMachine.exploreLocal(operativeMethod, exploreType, stopCondition,
-                              iterNum);
-                              */
+      Machines graspMachine(numberOfMachines, numberOfTasks, setupTimes,
+                            processingTime);
+      graspMachine.grasp();
 
+      graspMachine.exploreLocal(operativeMethod, exploreType, stopCondition,
+                                iterNum);
+                                */
+
+    } else {
+      int operation = 1;
+      int exploration = 1;
+      int stopCon = 1;
+      int iterations = 100;
+      inFile.open(argv[1]);
+      parseInput(inFile);
+      std::cout << "----- MODO TRAZA -----\n\n";
+      Machines machn(numberOfMachines, numberOfTasks, setupTimes,
+                     processingTime);
+      std::cout << "----- GREEDY ALGORITHM -----\n";
+      auto start = std::chrono::steady_clock::now();
+      machn.greedy();
+      auto end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : GREEDY INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      end = std::chrono::steady_clock::now();
+      machn.exploreLocal(1, 1, stopCon, iterations);
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : ANXIOUS INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(1, 2, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : GREEDY INTERCHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(2, 2, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : ANXIOUS INTERCHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(2, 2, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : GREEDY INTRAINSERT -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(3, 1, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : ANXIOUS INTRAINSERT -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(3, 2, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : GREEDY INTERINSERT -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(4, 1, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GRASP ALGORITHM : ANXIOUS INTERINSERT -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(4, 2, stopCon, iterations);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      // VND
+      std::cout << "----- VND ALGORITHM : GREEDY INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(operativeMethod, exploreType, stopCondition, iterNum);
+      machn.vnd(1, 1, stopCondition, iterNum);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- VND ALGORITHM : ANXIOUS INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(operativeMethod, exploreType, stopCondition, iterNum);
+      machn.vnd(1, 2, 2, iterNum);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      // GVNS
+      std::cout << "----- GVNS ALGORITHM : GREEDY INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(operativeMethod, exploreType, stopCondition, iterNum);
+      machn.gvns(1, 1, stopCondition, iterNum);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GVNS ALGORITHM : ANXIOUS INTRACHANGE -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.grasp();
+      machn.exploreLocal(operativeMethod, exploreType, stopCondition, iterNum);
+      machn.gvns(1, 2, stopCondition, iterNum);
+      end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+    }
   } else {
     std::cout << "Error introduciendo datos\n";
   }

@@ -6,6 +6,9 @@ class LocalSearch {
   std::vector<Machine> principalSolution;
   std::vector<std::vector<Machine>> variations;
 
+  std::vector<std::vector<int>> setupTimes;
+  std::vector<int> processingTime;
+
   void interTasksBetweenMachines(void);
   void interTasksSameMachine(void);
   void insertTasksBetweenMachines(void);
@@ -23,6 +26,8 @@ class LocalSearch {
   inline std::vector<Machine> getSolution() { return principalSolution; };
   inline void setMachineVector(std::vector<Machine>& v) {principalSolution = v; }; 
   int getTotalTct(std::vector<Machine>&);
+  void setVectTimes(std::vector<std::vector<int>>, std::vector<int>);
+  void recalculateTime(std::vector<Machine>&, int, int);
 };
 
 // Método multiarranque

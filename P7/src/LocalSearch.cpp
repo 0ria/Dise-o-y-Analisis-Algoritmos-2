@@ -15,6 +15,8 @@ void LocalSearch::interTasksBetweenMachines(void) {
         if (z != i) {
           for (int w = 0; w < principalSolution[z].getTasks().size(); w++) {
             std::swap(auxVect[i].getTasks()[j], auxVect[z].getTasks()[w]);
+            recalculateTime(auxVect, i, j);
+            recalculateTime(auxVect, z, w);
             variations.push_back(auxVect);
             auxVect = principalSolution;
           }
@@ -31,6 +33,8 @@ void LocalSearch::interTasksSameMachine(void) {
       for (int z = j; z < principalSolution[i].getTasks().size(); z++) {
         if (j != z) {
           std::swap(auxVect[i].getTasks()[j], auxVect[i].getTasks()[z]);
+          recalculateTime(auxVect, i, j);
+          recalculateTime(auxVect, i, z);
           variations.push_back(auxVect);
           auxVect = principalSolution;
         }
@@ -49,6 +53,8 @@ void LocalSearch::insertTasksBetweenMachines(void) {
             auxVect[z].getTasks().insert(auxVect[z].getTasks().begin() + w,
                                          auxVect[i].getTasks()[j]);
             auxVect[i].getTasks().erase(auxVect[i].getTasks().begin() + j);
+            recalculateTime(auxVect, i, j);
+            recalculateTime(auxVect, z, w);
             variations.push_back(auxVect);
             auxVect = principalSolution;
           }
@@ -69,6 +75,8 @@ void LocalSearch::insertTasksSameMachine(void) {
           auxVect[i].getTasks().erase(auxVect[i].getTasks().begin() + j);
           auxVect[i].getTasks().insert(auxVect[i].getTasks().begin() + z,
                                        auxPair);
+          recalculateTime(auxVect, i, j);
+          recalculateTime(auxVect, i, z);
           variations.push_back(auxVect);
           auxVect = principalSolution;
         }
@@ -111,14 +119,17 @@ void LocalSearch::anxiousSearch(int operativeMethod) {
 }
 
 int LocalSearch::getTotalTct(std::vector<Machine>& vec) {
-  int tct;
-  for (auto it : vec) tct += it.getTctTime();
+  int tct = 0;
+  for (auto it : vec) {
+    it.updateTct();
+    tct += it.getTctTime();
+  }
   return tct;
 }
 
-void LocalSearch::improveSolution(int operativeMethod,
-                                                  int exploreType,
-                                                  int stopCondition) {
+void LocalSearch::improveSolution(int operativeMethod, int exploreType,
+                                  int stopCondition) {
+  variations.clear();
   switch (operativeMethod) {
     case 1:
       interTasksBetweenMachines();
@@ -141,5 +152,30 @@ void LocalSearch::improveSolution(int operativeMethod,
     case 2:
       anxiousSearch(operativeMethod);
       break;
+  }
+}
+
+void LocalSearch::setVectTimes(std::vector<std::vector<int>> st,
+                               std::vector<int> pt) {
+  setupTimes = st;
+  processingTime = pt;
+}
+
+void LocalSearch::recalculateTime(std::vector<Machine>& machineArray,
+                                  int machineIndex, int taskIndex) {
+  std::vector<std::pair<int, int>>& machine =
+      machineArray[machineIndex].getTasks();
+  if (taskIndex == 0) {
+    machine[taskIndex].second = setupTimes[0][machine[taskIndex].first] +
+                                processingTime[machine[taskIndex].first - 1];
+  } else {
+    machine[taskIndex].second =
+        setupTimes[machine[taskIndex - 1].first][machine[taskIndex].first] +
+        processingTime[machine[taskIndex].first - 1];
+  }
+  if (taskIndex < machine.size() - 1) {
+    machine[taskIndex + 1].second =
+        setupTimes[machine[taskIndex].first][machine[taskIndex + 1].first] +
+        processingTime[machine[taskIndex + 1].first - 1];
   }
 }

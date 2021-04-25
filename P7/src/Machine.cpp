@@ -20,6 +20,7 @@ void Machine::addNewTask(std::pair<int, int> taskNum) {
 void Machine::showInfo(void) {
   for (auto it: tasks) 
     std::cout << "[" << it.first << ", " << it.second << "] ";
+  //std::cout << "\n";
   std::cout << "\nTotal time: " << totalTime << "\n";
   updateTct();
   std::cout << "Total tct time: " << tctTime << "\n\n";
