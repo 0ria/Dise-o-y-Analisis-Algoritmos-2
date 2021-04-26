@@ -32,6 +32,8 @@ class Machines {
   void gvns(int, int, int, int);
   int iterTime(void);
   std::vector<std::vector<int>> getBetterTime(int);
+  std::vector<std::vector<int>> getBetterTime2(int);
   bool minNotSelected(int, std::vector<std::vector<int>>&);
   void exploreLocal(int, int, int, int);
+  void greedy2(void);
 };

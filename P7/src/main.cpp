@@ -65,9 +65,11 @@ int main(int argc, char* argv[]) {
       switch (inputOption) {
         case 1:
           machn.greedy();
+          machn.printTimes();
           break;
         case 2:
           machn.greedy();  // otro greedy
+          machn.printTimes();
           break;
         case 3:
           machn.grasp();
@@ -94,19 +96,6 @@ int main(int argc, char* argv[]) {
           break;
       }
 
-      /*
-      Machines betterGreedyMachine(numberOfMachines, numberOfTasks, setupTimes,
-                          processingTime);
-      betterGreedyMachine.betterGreedy();
-
-      Machines graspMachine(numberOfMachines, numberOfTasks, setupTimes,
-                            processingTime);
-      graspMachine.grasp();
-
-      graspMachine.exploreLocal(operativeMethod, exploreType, stopCondition,
-                                iterNum);
-                                */
-
     } else {
       int operation = 1;
       int exploration = 1;
@@ -121,6 +110,18 @@ int main(int argc, char* argv[]) {
       auto start = std::chrono::steady_clock::now();
       machn.greedy();
       auto end = std::chrono::steady_clock::now();
+      machn.printTimes();
+      std::cout << "Elapsed time: "
+                << std::chrono::duration_cast<std::chrono::microseconds>(end -
+                                                                         start)
+                       .count()
+                << "μs\n\n";
+      std::cout << "-----------------------------------\n\n";
+
+      std::cout << "----- GREEDY 2 ALGORITHM -----\n";
+      start = std::chrono::steady_clock::now();
+      machn.greedy2();
+      end = std::chrono::steady_clock::now();
       machn.printTimes();
       std::cout << "Elapsed time: "
                 << std::chrono::duration_cast<std::chrono::microseconds>(end -
