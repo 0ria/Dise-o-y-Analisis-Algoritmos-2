@@ -26,7 +26,7 @@ class Machines {
   ~Machines();
   void printTimes(void);
   void greedy(void);
-  //void betterGreedy(void);
+  void greedy2(void);
   void grasp(void);
   void vnd(int, int, int, int);
   void gvns(int, int, int, int);
@@ -35,5 +35,4 @@ class Machines {
   std::vector<std::vector<int>> getBetterTime2(int);
   bool minNotSelected(int, std::vector<std::vector<int>>&);
   void exploreLocal(int, int, int, int);
-  void greedy2(void);
 };

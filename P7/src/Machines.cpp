@@ -16,6 +16,7 @@ Machines::Machines(int totalMach, int totalTask,
 
 Machines::~Machines() {}
 
+// Método que resetea los vectores cada vez que se llama
 void Machines::resetTasks() {
   remainingTasks.clear();
   machineVector.clear();
@@ -23,6 +24,7 @@ void Machines::resetTasks() {
   for (int i = 1; i <= numberOfTasks; i++) remainingTasks.push_back(i);
 }
 
+// Método usado para ver si un mínimo ya ha sido seleccionado
 bool Machines::minNotSelected(int pos,
                               std::vector<std::vector<int>>& minimums) {
   for (int i = 0; i < minimums.size(); i++) {
@@ -31,6 +33,7 @@ bool Machines::minNotSelected(int pos,
   return false;
 }
 
+// Método constructivo del grasp
 void Machines::grasp() {
   resetTasks();
   // resetTct();
@@ -46,6 +49,7 @@ void Machines::grasp() {
   }
 }
 
+// Método constructivo del Greedy
 void Machines::greedy() {
   resetTasks();
   while (remainingTasks.size() != 0) {
@@ -59,6 +63,7 @@ void Machines::greedy() {
   }
 }
 
+// Segundo algoritmo implementado para el Greedy
 void Machines::greedy2() {
   resetTasks();
   while (remainingTasks.size() != 0) {
@@ -72,6 +77,7 @@ void Machines::greedy2() {
   }
 }
 
+// Método el cual se queda con las k mejores tareas que quedan aun por asignar
 std::vector<std::vector<int>> Machines::getBetterTime(int k) {
   std::vector<std::vector<int>> auxVect;
   int currentTime;
@@ -103,6 +109,7 @@ std::vector<std::vector<int>> Machines::getBetterTime(int k) {
   return auxVect;
 }
 
+// Método el cual se queda con las k mejores tareas que quedan aun por asignar para el Greedy2
 std::vector<std::vector<int>> Machines::getBetterTime2(int k) {
   std::vector<std::vector<int>> auxVect;
   int currentTime;
@@ -130,6 +137,7 @@ std::vector<std::vector<int>> Machines::getBetterTime2(int k) {
   return auxVect;
 }
 
+// Método que calcula el tct de un vector de máquinas pasado por referencia
 int Machines::calculateTct(std::vector<Machine>& vm) {
   int tct = 0;
   for (auto it : vm) {
@@ -139,6 +147,7 @@ int Machines::calculateTct(std::vector<Machine>& vm) {
   return tct;
 }
 
+// Método que calcula minimos locales haciendo uso del improveSolution de la clase localSearch
 void Machines::vnd(int operativeMethod, int exploreType, int stopCondition,
                    int iterationsNumber) {
   ls.setMachineVector(machineVector);
@@ -161,6 +170,7 @@ void Machines::vnd(int operativeMethod, int exploreType, int stopCondition,
   }
 }
 
+// Método que genera la k max para el correcto funcionamiento del gvns, como máximo es 5
 int Machines::generateKMax() {
   int minimum = machineVector[0].getTasks().size();
   for (int i = 0; i < machineVector.size(); i++)
@@ -169,6 +179,7 @@ int Machines::generateKMax() {
   return std::min(minimum, 5);
 }
 
+// Método que comprueba si el procesp generado por generateRandomKPoints no ha sido cambiado ya de máquina
 bool Machines::isNotContained(
     std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>>& vec,
     int machine, int task) {
@@ -180,6 +191,7 @@ bool Machines::isNotContained(
   return false;
 }
 
+// Método que genera k saltos (intercambios) y los realiza dentro del vector de máquinas 
 void Machines::generateRandomKPoints(int k) {
   int i = 0;
   std::vector<std::pair<std::pair<int, int>, std::pair<int, int>>> changesDone;
@@ -206,6 +218,7 @@ void Machines::generateRandomKPoints(int k) {
   }
 }
 
+// Método el cual haciendo uso de los saltos y del vnd trata de encontrar minimos globales
 void Machines::gvns(int operativeMethod, int exploreType, int stopCondition,
                     int iterationsNumber) {
   for (int i = 0; i < iterationsNumber; i++) {
@@ -231,6 +244,8 @@ void Machines::gvns(int operativeMethod, int exploreType, int stopCondition,
   }
 }
 
+// Método el cual se usa para explorar vecinas e ir mejorando una solución inicial
+// Hace uso de improveSolution de la clase LocalSearch, el case 1 es Greedy y el case 2 Ansioso
 void Machines::exploreLocal(int operativeMethod, int exploreType,
                             int stopCondition, int iterationsNumber) {
   // LocalSearch ls;
@@ -242,7 +257,6 @@ void Machines::exploreLocal(int operativeMethod, int exploreType,
         ls.improveSolution(operativeMethod, exploreType, stopCondition);
       }
       machineVector = ls.getSolution();
-      // for (auto it : machineVector) it.showInfo();
       break;
     case 2:
       int actualIterations = 0;
@@ -263,11 +277,11 @@ void Machines::exploreLocal(int operativeMethod, int exploreType,
         } else
           actualIterations++;
       }
-      // for (auto it : machineVector) it.showInfo();
       break;
   }
 }
 
+// Método que printea por consola informacion de las máquinas y el tct total
 void Machines::printTimes(void) {
   for (auto it : machineVector) {
     it.showInfo();

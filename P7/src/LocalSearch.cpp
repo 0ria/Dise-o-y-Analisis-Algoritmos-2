@@ -7,6 +7,7 @@ LocalSearch::LocalSearch(std::vector<Machine>& actSol)
 
 LocalSearch::~LocalSearch() {}
 
+// Algoritmo encargado de realizar todos los posibles intercambios de tareas entre distintas máquinas
 void LocalSearch::interTasksBetweenMachines(void) {
   std::vector<Machine> auxVect = principalSolution;
   for (int i = 0; i < principalSolution.size(); i++) {
@@ -26,6 +27,7 @@ void LocalSearch::interTasksBetweenMachines(void) {
   }
 }
 
+// Algoritmo encargado de realizar todos los posibles intercambios de tareas entre una misma máquina
 void LocalSearch::interTasksSameMachine(void) {
   std::vector<Machine> auxVect = principalSolution;
   for (int i = 0; i < principalSolution.size(); i++) {
@@ -43,6 +45,7 @@ void LocalSearch::interTasksSameMachine(void) {
   }
 }
 
+// Algoritmo encargado de realizar todas las posibles reinserciones de tareas entre distintas máquinas
 void LocalSearch::insertTasksBetweenMachines(void) {
   std::vector<Machine> auxVect = principalSolution;
   for (int i = 0; i < principalSolution.size(); i++) {
@@ -64,6 +67,7 @@ void LocalSearch::insertTasksBetweenMachines(void) {
   }
 }
 
+// Algoritmo encargado de realizar todas las posibles reinserciones de tareas en una misma máquina
 void LocalSearch::insertTasksSameMachine(void) {
   std::vector<Machine> auxVect = principalSolution;
   std::pair<int, int> auxPair;
@@ -85,6 +89,8 @@ void LocalSearch::insertTasksSameMachine(void) {
   }
 }
 
+// Método de exploración Greedy, si al final de recorrer todas las
+// tareas encuentra una mejor solucion llama de nuevo a ImproveSulution
 void LocalSearch::greedySearch(int operativeMethod) {
   int minTct = getTotalTct(principalSolution);
   int currentTct = 0;
@@ -98,9 +104,11 @@ void LocalSearch::greedySearch(int operativeMethod) {
     }
   }
   if (foundBetterSolution)
-    improveSolution(operativeMethod, 1, 1);  // El 1 del final borrar
+    improveSolution(operativeMethod, 1, 1);
 }
 
+// Método de exploración Ansioso, En el momento que encuentra una mejor
+// tarea llama a ImproveLocal con esta nueva solución
 void LocalSearch::anxiousSearch(int operativeMethod) {
   int minTct = getTotalTct(principalSolution);
   int currentTct = 0;
@@ -118,6 +126,7 @@ void LocalSearch::anxiousSearch(int operativeMethod) {
     improveSolution(operativeMethod, 2, 1);  // El 1 del final borrar
 }
 
+// Calcula el tct total del un vector pasado
 int LocalSearch::getTotalTct(std::vector<Machine>& vec) {
   int tct = 0;
   for (auto it : vec) {
@@ -127,6 +136,7 @@ int LocalSearch::getTotalTct(std::vector<Machine>& vec) {
   return tct;
 }
 
+// Método el cual realiza una mejora local con un tipo de exploración
 void LocalSearch::improveSolution(int operativeMethod, int exploreType,
                                   int stopCondition) {
   variations.clear();
@@ -155,12 +165,15 @@ void LocalSearch::improveSolution(int operativeMethod, int exploreType,
   }
 }
 
+// Método que setea los tiempos de procesado y de setup para poder recalcular el 
+// tiempo al cambiar tareas
 void LocalSearch::setVectTimes(std::vector<std::vector<int>> st,
                                std::vector<int> pt) {
   setupTimes = st;
   processingTime = pt;
 }
 
+// Método que recalcula el tiempo de las tareas al cambiarlas de posiciones
 void LocalSearch::recalculateTime(std::vector<Machine>& machineArray,
                                   int machineIndex, int taskIndex) {
   std::vector<std::pair<int, int>>& machine =
