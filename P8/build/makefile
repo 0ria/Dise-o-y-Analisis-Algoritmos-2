@@ -7,7 +7,7 @@ LDIR =../files
 
 LIBS=-lm
 
-_OBJ = Mdp.o Point.o main.o
+_OBJ = Mdp.o LocalSearch.o Point.o main.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 all: lcs

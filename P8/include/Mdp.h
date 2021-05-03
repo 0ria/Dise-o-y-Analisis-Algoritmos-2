@@ -1,4 +1,4 @@
-#include "Point.h"
+#include "LocalSearch.h"
 class Mdp {
  private:
   int numberOfElements;
@@ -6,6 +6,7 @@ class Mdp {
   std::vector<Point> pointVector;
   std::vector<Point> finalSolutions;
   float zDist = 0;
+  LocalSearch ls;
 
  public:
   Mdp(/* args */);
@@ -17,7 +18,7 @@ class Mdp {
   float getZDist(std::vector<Point>&);
   void printSol(void);
   void greedy(int);
-
+  void improveSolution();
 };
 
 /*

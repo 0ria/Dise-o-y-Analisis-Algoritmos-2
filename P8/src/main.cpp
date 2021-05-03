@@ -35,8 +35,15 @@ int main(int argc, char* argv[]) {
   }
   Mdp mdpAlgorithm(numberOfElements, dimnesions, vectorInput);
   for (int i = 2; i <= 5; i++) {
-    std::cout << "Número puntos en solución: " << i << "\n";
+    std::cout << "Número puntos en solución Greedy: " << i << "\n";
     mdpAlgorithm.greedy(i);
+    mdpAlgorithm.printSol();
+    std::cout << "\n-----------------\n\n";
+  }
+  for (int i = 2; i <= 5; i++) {
+    std::cout << "Número puntos en solución con mejora local: " << i << "\n";
+    mdpAlgorithm.greedy(i);
+    mdpAlgorithm.improveSolution();
     mdpAlgorithm.printSol();
     std::cout << "\n-----------------\n\n";
   }

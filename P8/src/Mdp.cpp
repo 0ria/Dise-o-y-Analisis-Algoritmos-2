@@ -3,7 +3,10 @@
 Mdp::Mdp(/* args */) {}
 
 Mdp::Mdp(int totalPoints, int dim, std::vector<Point>& coor)
-    : numberOfElements(totalPoints), dimensions(dim), pointVector(coor) {}
+    : numberOfElements(totalPoints),
+      dimensions(dim),
+      pointVector(coor),
+      ls(pointVector) {}
 
 Mdp::~Mdp() {}
 
@@ -77,6 +80,15 @@ void Mdp::greedy(int m) {
 void Mdp::printSol() {
   for (auto it : finalSolutions) it.printCoords();
   std::cout << "\nz: " << zDist;
+}
+
+void Mdp::improveSolution(void) {
+  ls.setNewSol(finalSolutions);
+  auto newSol = ls.getBetterSol();
+  if (zDist < getZDist(newSol)) {
+    zDist = getZDist(newSol);
+    finalSolutions = newSol;
+  }
 }
 
 /* Para GRASP
